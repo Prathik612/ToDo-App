@@ -29,7 +29,8 @@ class _ToListState extends State<ToList> {
   final TextEditingController _textFieldController = TextEditingController();
   final List<String> todos = <String>[];
   final List<bool> isPressed = <bool>[];
-  bool light = false, remove = false, editMode = false;
+  bool light = false, editMode = false;
+  // bool remove = false;
 
   @override
   Widget build(BuildContext context) {
@@ -85,14 +86,49 @@ class _ToListState extends State<ToList> {
                     flex: 18,
                     child: InkWell(
                       onLongPress: () {
-                        setState(() {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false, // user must tap button!
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Delete Item'),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: const <Widget>[
+                                    Text('Would you like delete this item?'),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('Delete'),
+                                  onPressed: () {
+                                    // remove = true;
+                                    setState(() {
+                                      todos.removeAt(index);
+                                      isPressed.removeAt(index);
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        /*setState(() {
                           _confirmdel(context);
                           if (remove == true) {
                             todos.removeAt(index);
                             isPressed.removeAt(index);
                             remove = false;
                           }
-                        });
+                        });*/
                       },
                       child: Container(
                         alignment: Alignment.centerLeft,
@@ -144,10 +180,6 @@ class _ToListState extends State<ToList> {
                       color: light ? Colors.black : Colors.white,
                     ),
                   ),
-                  const Expanded(
-                    flex: 1,
-                    child: Text("\t"),
-                  ),
                 ],
               ),
             );
@@ -194,7 +226,7 @@ class _ToListState extends State<ToList> {
           );
         });
   }
-
+/*
   Future<void> _confirmdel(BuildContext context) async {
     return showDialog<void>(
       context: context,
@@ -227,5 +259,5 @@ class _ToListState extends State<ToList> {
         );
       },
     );
-  }
+  }*/
 }
