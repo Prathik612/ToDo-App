@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:to_do/providers/providers.dart';
+import 'package:to_do/utils/utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,12 +28,6 @@ class ToList extends StatefulWidget {
 }
 
 class _ToListState extends State<ToList> {
-  final TextEditingController _textFieldController = TextEditingController();
-  final List<String> todos = <String>[];
-  final List<bool> isPressed = <bool>[];
-  bool light = false, editMode = false;
-  // bool remove = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,48 +83,15 @@ class _ToListState extends State<ToList> {
                     child: InkWell(
                       onLongPress: () {
                         showDialog(
-                          context: context,
-                          barrierDismissible: false, // user must tap button!
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Delete Item'),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: const <Widget>[
-                                    Text('Would you like delete this item?'),
-                                  ],
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('${todos[index]}'),
+                                content: SingleChildScrollView(
+                                  child: Text(notes[index]),
                                 ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('Cancel'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                TextButton(
-                                  child: const Text('Delete'),
-                                  onPressed: () {
-                                    // remove = true;
-                                    setState(() {
-                                      todos.removeAt(index);
-                                      isPressed.removeAt(index);
-                                      Navigator.of(context).pop();
-                                    });
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                        /*setState(() {
-                          _confirmdel(context);
-                          if (remove == true) {
-                            todos.removeAt(index);
-                            isPressed.removeAt(index);
-                            remove = false;
-                          }
-                        });*/
+                              );
+                            });
                       },
                       child: Container(
                         alignment: Alignment.centerLeft,
@@ -150,31 +113,29 @@ class _ToListState extends State<ToList> {
                     flex: 2,
                     child: IconButton(
                       onPressed: () {
-                        _textFieldController.text = todos[index];
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                content: TextField(
-                                  onChanged: (value) {},
-                                  controller: _textFieldController,
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          String temp = _textFieldController
-                                              .text
-                                              .toString();
-                                          todos[index] = temp;
-                                          Navigator.pop(context, 'Done');
-                                          _textFieldController.clear();
-                                        });
-                                      },
-                                      child: const Text('Done')),
-                                ],
-                              );
-                            });
+                        setState(() {
+                          todos.removeAt(index);
+                          notes.removeAt(index);
+                          isPressed.removeAt(index);
+                        });
+                      },
+                      icon: const Icon(Icons.delete_outline_sharp),
+                      color: light ? Colors.black : Colors.white,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: IconButton(
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) => EditList(
+                                  indexx: index,
+                                )),
+                          ),
+                        );
+                        setState(() {});
                       },
                       icon: const Icon(Icons.mode_edit_sharp),
                       color: light ? Colors.black : Colors.white,
@@ -189,75 +150,18 @@ class _ToListState extends State<ToList> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _displayTextInputDialog(context);
-          });
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => const AddToList()),
+            ),
+          );
+          setState(() {});
         },
         backgroundColor: light ? Colors.black : Colors.white,
         child: Icon(Icons.add, color: light ? Colors.white : Colors.black),
       ),
     );
   }
-
-  Future<void> _displayTextInputDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('To-Do'),
-            content: TextField(
-              onChanged: (value) {},
-              controller: _textFieldController,
-            ),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      String temp = _textFieldController.text.toString();
-                      todos.add(temp);
-                      isPressed.add(false);
-                      Navigator.pop(context, 'Done');
-                      _textFieldController.clear();
-                    });
-                  },
-                  child: const Text('Done')),
-            ],
-          );
-        });
-  }
-/*
-  Future<void> _confirmdel(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Delete Item'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const <Widget>[
-                Text('Would you like delete this item?'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Approve'),
-              onPressed: () {
-                remove = true;
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }*/
 }
