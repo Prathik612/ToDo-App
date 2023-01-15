@@ -1,3 +1,5 @@
+///Class to add new item to list
+
 import 'package:flutter/material.dart';
 import 'package:to_do/utils/data.dart';
 
@@ -20,6 +22,19 @@ class _AddToListState extends State<AddToList> {
         leading: BackButton(
           color: light ? Colors.white : Colors.black,
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                light = !light;
+              });
+            },
+            icon: light
+                ? const Icon(Icons.light_mode_outlined)
+                : const Icon(Icons.dark_mode_outlined),
+            color: light ? Colors.white : Colors.black,
+          ),
+        ],
         centerTitle: true,
         title: const Text('New Task'),
         backgroundColor: light ? Colors.black : Colors.white,
@@ -39,9 +54,6 @@ class _AddToListState extends State<AddToList> {
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: const BorderSide(
-                        color: Colors.red,
-                      ),
                     ),
                   ),
                 ),
@@ -65,24 +77,36 @@ class _AddToListState extends State<AddToList> {
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                   controller: _noteController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                    onPressed: () {
-                      String temp = _textFieldController.text.toString();
-                      todos.add(temp);
-                      temp = _noteController.text.toString();
-                      notes.add(temp);
-                      isPressed.add(false);
-                      Navigator.pop(context, 'Done');
-                    },
-                    child: const Text('Done')),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(150, 40),
+                    backgroundColor: light ? Colors.black : Colors.white,
+                    foregroundColor: light ? Colors.white : Colors.black,
+                  ),
+                  onPressed: () {
+                    String temp = _textFieldController.text.toString();
+                    todos.add(temp);
+                    temp = _noteController.text.toString();
+                    notes.add(temp);
+                    isPressed.add(false);
+                    Navigator.pop(context, 'Done');
+                  },
+                  child: const Text(
+                    'Done',
+                    textScaleFactor: 1.3,
+                  ),
+                ),
               )
             ],
           ),
