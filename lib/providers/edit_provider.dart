@@ -1,7 +1,7 @@
 /// Class to edit title and note
 
 import 'package:flutter/material.dart';
-import 'package:to_do/utils/data.dart';
+import 'package:to_do/utils/utils.dart';
 
 class EditList extends StatefulWidget {
   final dynamic indexx;
@@ -20,28 +20,29 @@ class _EditListState extends State<EditList> {
     _textFieldController.text = todos[widget.indexx];
     _noteController.text = notes[widget.indexx];
     return Scaffold(
-      backgroundColor: light ? Colors.white : Colors.black,
+      backgroundColor: SetTheme.bodybackground,
       appBar: AppBar(
         leading: BackButton(
-          color: light ? Colors.white : Colors.black,
+          color: SetTheme.topBarForeground,
         ),
         actions: [
           IconButton(
             onPressed: () {
               setState(() {
                 light = !light;
+                SetTheme.themeMode(light);
               });
             },
             icon: light
                 ? const Icon(Icons.light_mode_outlined)
                 : const Icon(Icons.dark_mode_outlined),
-            color: light ? Colors.white : Colors.black,
+            color: SetTheme.topBarForeground,
           ),
         ],
         centerTitle: true,
         title: const Text('New Task'),
-        backgroundColor: light ? Colors.black : Colors.white,
-        foregroundColor: light ? Colors.white : Colors.black,
+        backgroundColor: SetTheme.topBarBackground,
+        foregroundColor: SetTheme.topBarForeground,
       ),
       body: SafeArea(
         minimum: const EdgeInsets.all(15.0),
@@ -68,7 +69,7 @@ class _EditListState extends State<EditList> {
                   child: Text(
                     'Note:',
                     style: TextStyle(
-                      color: light ? Colors.black : Colors.white,
+                      color: SetTheme.bodyForeground,
                       fontSize: 16.5,
                     ),
                   ),
@@ -94,8 +95,8 @@ class _EditListState extends State<EditList> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(150, 40),
-                    backgroundColor: light ? Colors.black : Colors.white,
-                    foregroundColor: light ? Colors.white : Colors.black,
+                    backgroundColor: SetTheme.topBarBackground,
+                    foregroundColor: SetTheme.topBarForeground,
                   ),
                   onPressed: () {
                     String temp = _textFieldController.text.toString();

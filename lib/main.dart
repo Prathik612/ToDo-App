@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do/providers/providers.dart';
+import 'package:to_do/utils/theme.dart';
 import 'package:to_do/utils/utils.dart';
 import 'package:get/get.dart';
 
@@ -37,23 +38,24 @@ class _ToListState extends State<ToList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: light ? Colors.white : Colors.black,
+      backgroundColor: SetTheme.bodybackground,
       appBar: AppBar(
         actions: [
           IconButton(
             onPressed: () {
               setState(() {
                 light = !light;
+                SetTheme.themeMode(light);
               });
             },
             icon: light
                 ? const Icon(Icons.light_mode_outlined)
                 : const Icon(Icons.dark_mode_outlined),
-            color: light ? Colors.white : Colors.black,
+            color: SetTheme.topBarForeground,
           ),
         ],
-        backgroundColor: light ? Colors.black : Colors.white,
-        foregroundColor: light ? Colors.white : Colors.black,
+        backgroundColor: SetTheme.topBarBackground,
+        foregroundColor: SetTheme.topBarForeground,
         centerTitle: true,
         title: const Text("TO-DO"),
       ),
@@ -66,7 +68,7 @@ class _ToListState extends State<ToList> {
               return Container(
                 width: 100,
                 decoration: BoxDecoration(
-                  color: light ? Colors.white : Colors.black,
+                  color: SetTheme.bodybackground,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Row(
@@ -82,7 +84,7 @@ class _ToListState extends State<ToList> {
                         icon: isPressed[index]
                             ? const Icon(Icons.check_circle_outline)
                             : const Icon(Icons.circle_outlined),
-                        color: light ? Colors.black : Colors.white,
+                        color: SetTheme.bodyForeground,
                       ),
                     ),
                     Expanded(
@@ -106,11 +108,11 @@ class _ToListState extends State<ToList> {
                             '${todos[index]}',
                             style: isPressed[index]
                                 ? TextStyle(
-                                    color: light ? Colors.black : Colors.white,
+                                    color: SetTheme.bodyForeground,
                                     fontSize: 23,
                                     decoration: TextDecoration.lineThrough)
                                 : TextStyle(
-                                    color: light ? Colors.black : Colors.white,
+                                    color: SetTheme.bodyForeground,
                                     fontSize: 23),
                           ),
                         ),
@@ -127,7 +129,7 @@ class _ToListState extends State<ToList> {
                           });
                         },
                         icon: const Icon(Icons.delete_outline_sharp),
-                        color: light ? Colors.black : Colors.white,
+                        color: SetTheme.bodyForeground,
                       ),
                     ),
                     Expanded(
@@ -145,7 +147,7 @@ class _ToListState extends State<ToList> {
                           setState(() {});
                         },
                         icon: const Icon(Icons.mode_edit_sharp),
-                        color: light ? Colors.black : Colors.white,
+                        color: SetTheme.bodyForeground,
                       ),
                     ),
                   ],
@@ -168,8 +170,8 @@ class _ToListState extends State<ToList> {
           Get.toNamed('/add');
           //setState(() {});
         },
-        backgroundColor: light ? Colors.black : Colors.white,
-        child: Icon(Icons.add, color: light ? Colors.white : Colors.black),
+        backgroundColor: SetTheme.topBarBackground,
+        child: Icon(Icons.add, color: SetTheme.topBarForeground),
       ),
     );
   }
