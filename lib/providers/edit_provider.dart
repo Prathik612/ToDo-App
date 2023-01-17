@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:to_do/utils/utils.dart';
+import 'package:get/get.dart';
 
 class EditList extends StatefulWidget {
-  final dynamic indexx;
-  const EditList({super.key, required this.indexx});
+  const EditList({super.key});
 
   @override
   State<EditList> createState() => _EditListState();
@@ -14,11 +14,12 @@ class EditList extends StatefulWidget {
 class _EditListState extends State<EditList> {
   final TextEditingController _textFieldController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
+  dynamic ind = Get.arguments[0];
 
   @override
   Widget build(BuildContext context) {
-    _textFieldController.text = todos[widget.indexx];
-    _noteController.text = notes[widget.indexx];
+    _textFieldController.text = todos[ind];
+    _noteController.text = notes[ind];
     return Scaffold(
       backgroundColor: SetTheme.bodybackground,
       appBar: AppBar(
@@ -100,10 +101,11 @@ class _EditListState extends State<EditList> {
                   ),
                   onPressed: () {
                     String temp = _textFieldController.text.toString();
-                    todos[widget.indexx] = temp;
+                    todos[ind] = temp;
                     temp = _noteController.text.toString();
-                    notes[widget.indexx] = temp;
-                    Navigator.pop(context, 'Done');
+                    notes[ind] = temp;
+                    Get.back();
+                    // Navigator.pop(context, 'Done');
                   },
                   child: const Text(
                     'Done',

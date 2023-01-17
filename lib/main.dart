@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:to_do/providers/providers.dart';
-import 'package:to_do/utils/theme.dart';
 import 'package:to_do/utils/utils.dart';
 import 'package:get/get.dart';
 
@@ -21,6 +20,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => const ToList()),
         GetPage(name: '/add', page: () => const AddToList()),
+        GetPage(name: '/edit', page: () => const EditList()),
       ],
       debugShowCheckedModeBanner: false,
     );
@@ -135,16 +135,8 @@ class _ToListState extends State<ToList> {
                     Expanded(
                       flex: 2,
                       child: IconButton(
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: ((context) => EditList(
-                                    indexx: index,
-                                  )),
-                            ),
-                          );
-                          setState(() {});
+                        onPressed: () {
+                          Get.toNamed('/edit', arguments: [index]);
                         },
                         icon: const Icon(Icons.mode_edit_sharp),
                         color: SetTheme.bodyForeground,
@@ -160,15 +152,8 @@ class _ToListState extends State<ToList> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () /*async*/ {
-          /*await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: ((context) => const AddToList()),
-            ),
-          );*/
+        onPressed: () {
           Get.toNamed('/add');
-          //setState(() {});
         },
         backgroundColor: SetTheme.topBarBackground,
         child: Icon(Icons.add, color: SetTheme.topBarForeground),
