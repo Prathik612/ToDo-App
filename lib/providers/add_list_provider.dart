@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:to_do/utils/data.dart';
+import 'package:get/get.dart';
 
 class AddToList extends StatefulWidget {
   const AddToList({super.key});
@@ -100,7 +101,8 @@ class _AddToListState extends State<AddToList> {
                     temp = _noteController.text.toString();
                     notes.add(temp);
                     isPressed.add(false);
-                    Navigator.pop(context, 'Done');
+                    Get.back();
+                    // Navigator.pop(context, 'Done');
                   },
                   child: const Text(
                     'Done',

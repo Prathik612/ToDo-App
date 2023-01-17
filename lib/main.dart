@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:to_do/providers/providers.dart';
 import 'package:to_do/utils/utils.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,9 +13,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(useMaterial3: true),
-      home: const ToList(),
+      initialRoute: '/',
+      // home: const ToList(),
+      getPages: [
+        GetPage(name: '/', page: () => const ToList()),
+        GetPage(name: '/add', page: () => const AddToList()),
+      ],
       debugShowCheckedModeBanner: false,
     );
   }
@@ -52,112 +58,115 @@ class _ToListState extends State<ToList> {
         title: const Text("TO-DO"),
       ),
       body: SafeArea(
-        child: ListView.separated(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          itemCount: todos.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              width: 100,
-              decoration: BoxDecoration(
-                color: light ? Colors.white : Colors.black,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isPressed[index] = !isPressed[index];
-                        });
-                      },
-                      icon: isPressed[index]
-                          ? const Icon(Icons.check_circle_outline)
-                          : const Icon(Icons.circle_outlined),
-                      color: light ? Colors.black : Colors.white,
+        child: Obx(
+          () => ListView.separated(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            itemCount: todos.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                width: 100,
+                decoration: BoxDecoration(
+                  color: light ? Colors.white : Colors.black,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isPressed[index] = !isPressed[index];
+                          });
+                        },
+                        icon: isPressed[index]
+                            ? const Icon(Icons.check_circle_outline)
+                            : const Icon(Icons.circle_outlined),
+                        color: light ? Colors.black : Colors.white,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 18,
-                    child: InkWell(
-                      onLongPress: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('${todos[index]}'),
-                                content: SingleChildScrollView(
-                                  child: Text(notes[index]),
-                                ),
-                              );
-                            });
-                      },
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '${todos[index]}',
-                          style: isPressed[index]
-                              ? TextStyle(
-                                  color: light ? Colors.black : Colors.white,
-                                  fontSize: 23,
-                                  decoration: TextDecoration.lineThrough)
-                              : TextStyle(
-                                  color: light ? Colors.black : Colors.white,
-                                  fontSize: 23),
+                    Expanded(
+                      flex: 18,
+                      child: InkWell(
+                        onLongPress: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('${todos[index]}'),
+                                  content: SingleChildScrollView(
+                                    child: Text(notes[index]),
+                                  ),
+                                );
+                              });
+                        },
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${todos[index]}',
+                            style: isPressed[index]
+                                ? TextStyle(
+                                    color: light ? Colors.black : Colors.white,
+                                    fontSize: 23,
+                                    decoration: TextDecoration.lineThrough)
+                                : TextStyle(
+                                    color: light ? Colors.black : Colors.white,
+                                    fontSize: 23),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          todos.removeAt(index);
-                          notes.removeAt(index);
-                          isPressed.removeAt(index);
-                        });
-                      },
-                      icon: const Icon(Icons.delete_outline_sharp),
-                      color: light ? Colors.black : Colors.white,
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            todos.removeAt(index);
+                            notes.removeAt(index);
+                            isPressed.removeAt(index);
+                          });
+                        },
+                        icon: const Icon(Icons.delete_outline_sharp),
+                        color: light ? Colors.black : Colors.white,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: IconButton(
-                      onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: ((context) => EditList(
-                                  indexx: index,
-                                )),
-                          ),
-                        );
-                        setState(() {});
-                      },
-                      icon: const Icon(Icons.mode_edit_sharp),
-                      color: light ? Colors.black : Colors.white,
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) => EditList(
+                                    indexx: index,
+                                  )),
+                            ),
+                          );
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.mode_edit_sharp),
+                        color: light ? Colors.black : Colors.white,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
+                  ],
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
+        onPressed: () /*async*/ {
+          /*await Navigator.push(
             context,
             MaterialPageRoute(
               builder: ((context) => const AddToList()),
             ),
-          );
-          setState(() {});
+          );*/
+          Get.toNamed('/add');
+          //setState(() {});
         },
         backgroundColor: light ? Colors.black : Colors.white,
         child: Icon(Icons.add, color: light ? Colors.white : Colors.black),

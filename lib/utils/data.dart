@@ -1,6 +1,8 @@
 /// Global Data for the TO-DO list
 
-final List<String> todos = <String>[];
-final List<String> notes = <String>[];
-final List<bool> isPressed = <bool>[];
+import 'package:get/get.dart';
+
+final List<String> todos = <String>[].obs;
+final List<String> notes = <String>[].obs;
+final List<bool> isPressed = <bool>[].obs;
 bool light = false;
