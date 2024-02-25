@@ -1,16 +1,11 @@
-# TO_DO
+# ToDo App
+This is a simple ToDo application developed using Flutter. It allows users to create, manage, and delete tasks efficiently.
 
-A new Flutter project.
+## Features
+-Task Management: Add, edit, and delete tasks.
 
-## Getting Started
+-Priority Levels: Assign priority levels to tasks for better organization.
 
-This project is a starting point for a Flutter application.
+-User Authentication: Secure login and registration system to manage tasks securely.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+-Responsive Design: Works seamlessly on desktop and mobile devices.
